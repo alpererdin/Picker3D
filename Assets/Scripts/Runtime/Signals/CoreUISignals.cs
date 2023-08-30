@@ -1,9 +1,10 @@
 using UnityEngine;
-using Enums;
+using Runtime.Enums;
 using UnityEngine.Events;
+
 namespace Runtime.Signals
 {
-    public class CoreUISignals:MonoBehaviour
+    public class CoreUISignals : MonoBehaviour
    {
        #region Singleton
 
@@ -14,6 +15,7 @@ namespace Runtime.Signals
            if (Instance != this && Instance != null)
            {
                Destroy(gameObject);
+               return;
            }
 
            Instance = this;
@@ -22,7 +24,7 @@ namespace Runtime.Signals
        #endregion
 
        public UnityAction<UIPanelTypes, int> onOpenPanel = delegate { };
-       public UnityAction<int>onClosePanel=delegate {  };
+       public UnityAction<int> onClosePanel = delegate { };
        public UnityAction onCloseAllPanels = delegate { };
 
    }
