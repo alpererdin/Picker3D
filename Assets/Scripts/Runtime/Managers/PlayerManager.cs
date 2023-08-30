@@ -1,9 +1,8 @@
-using System;
-using Keys;
 using Runtime.Commands.Player;
 using Runtime.Controllers.Player;
 using Runtime.Data.UnityObjects;
 using Runtime.Data.ValueObjects;
+using Runtime.Keys;
 using Runtime.Signals;
 using UnityEngine;
 
@@ -16,6 +15,7 @@ namespace Runtime.Managers
         #region Public Variables
 
         public byte StageValue;
+
         internal ForceBallsToPoolCommand ForceCommand;
 
         #endregion
@@ -25,7 +25,6 @@ namespace Runtime.Managers
         [SerializeField] private PlayerMovementController movementController;
         [SerializeField] private PlayerMeshController meshController;
         [SerializeField] private PlayerPhysicsController physicsController;
-            
 
         #endregion
 
@@ -40,24 +39,24 @@ namespace Runtime.Managers
         private void Awake()
         {
             _data = GetPlayerData();
-            SendDataToController();
+            SendDataToControllers();
             Init();
         }
-   
-        private void SendDataToController()
-        {
-            movementController.SetData(_data.MovementData);
-            meshController.SetData(_data.MeshData);
- 
-        }
+
         private PlayerData GetPlayerData()
         {
             return Resources.Load<CD_Player>("Data/CD_Player").Data;
-            
         }
+
+        private void SendDataToControllers()
+        {
+            movementController.SetData(_data.MovementData);
+            meshController.SetData(_data.MeshData);
+        }
+
         private void Init()
         {
-            ForceCommand = new ForceBallsToPoolCommand(this,_data.ForceData);
+            ForceCommand = new ForceBallsToPoolCommand(this, _data.ForceData);
         }
 
         private void OnEnable()
@@ -67,35 +66,39 @@ namespace Runtime.Managers
 
         private void SubscribeEvents()
         {
-            InputSignals.Instance.onInputTaken += ()=>movementController.IsReadyToMove(false);
-            InputSignals.Instance.onInputReleased +=()=>movementController.IsReadyToMove(false);
+            InputSignals.Instance.onInputTaken += () => movementController.IsReadyToMove(true);
+            InputSignals.Instance.onInputReleased += () => movementController.IsReadyToMove(false);
             InputSignals.Instance.onInputDragged += OnInputDragged;
-            UISignals.Instance.onPlay += ()=> movementController.IsReadyToPlay(true);
-
-            CoreGameSignals.Instance.onLevelSuccessful += ()=>movementController.IsReadyToPlay(false);
-            CoreGameSignals.Instance.onLevelFailed += ()=>movementController.IsReadyToPlay(false);
-            CoreGameSignals.Instance.onStageAreaEntered += ()=>  movementController.IsReadyToPlay(false);
-            CoreGameSignals.Instance.onStageAreaSuccesful += OnStageAreaSuccessful;
+            UISignals.Instance.onPlay += () => movementController.IsReadyToPlay(true);
+            CoreGameSignals.Instance.onLevelSuccessful += () => movementController.IsReadyToPlay(false);
+            CoreGameSignals.Instance.onLevelFailed += () => movementController.IsReadyToPlay(false);
+            CoreGameSignals.Instance.onStageAreaEntered += () => movementController.IsReadyToPlay(false);
+          //  CoreGameSignals.Instance.onStageAreaSuccessful += OnStageAreaSuccessful;
             CoreGameSignals.Instance.onFinishAreaEntered += OnFinishAreaEntered;
             CoreGameSignals.Instance.onReset += OnReset;
         }
-    
+
         private void OnInputDragged(HorizontalInputParams inputParams)
         {
             movementController.UpdateInputParams(inputParams);
-        }
-        
-         private void OnFinishAreaEntered()
-        {
-            CoreGameSignals.Instance.onLevelSuccessful?.Invoke();
-            //minigame
         }
 
         private void OnStageAreaSuccessful(byte value)
         {
             StageValue = ++value;
+            movementController.IsReadyToPlay(true);
+            meshController.ScaleUpPlayer();
+           // meshController.PlayConfetiParticle();
+            meshController.ShowUpText();
         }
-        
+
+        private void OnFinishAreaEntered()
+        {
+            CoreGameSignals.Instance.onLevelSuccessful?.Invoke();
+            //Mini Game Yazılmalı
+        }
+
+
         private void OnReset()
         {
             StageValue = 0;
@@ -106,19 +109,18 @@ namespace Runtime.Managers
 
         private void UnSubscribeEvents()
         {
-            InputSignals.Instance.onInputTaken -= ()=>movementController.IsReadyToMove(false);
-            InputSignals.Instance.onInputReleased -= ()=>movementController.IsReadyToMove(false);
+            InputSignals.Instance.onInputTaken -= () => movementController.IsReadyToMove(true);
+            InputSignals.Instance.onInputReleased -= () => movementController.IsReadyToMove(false);
             InputSignals.Instance.onInputDragged -= OnInputDragged;
-            
-            UISignals.Instance.onPlay -=  ()=> movementController.IsReadyToPlay(true);
-             
-            CoreGameSignals.Instance.onLevelSuccessful -= ()=>movementController.IsReadyToPlay(false);
-            CoreGameSignals.Instance.onLevelFailed -=()=>movementController.IsReadyToPlay(false);
-            CoreGameSignals.Instance.onStageAreaEntered -=  ()=>movementController.IsReadyToPlay(false);
-            CoreGameSignals.Instance.onStageAreaSuccesful -= OnStageAreaSuccessful;
+            UISignals.Instance.onPlay -= () => movementController.IsReadyToPlay(true);
+            CoreGameSignals.Instance.onLevelSuccessful -= () => movementController.IsReadyToPlay(false);
+            CoreGameSignals.Instance.onLevelFailed -= () => movementController.IsReadyToPlay(false);
+            CoreGameSignals.Instance.onStageAreaEntered -= () => movementController.IsReadyToPlay(false);
+            //CoreGameSignals.Instance.onStageAreaSuccessful -= OnStageAreaSuccessful;
             CoreGameSignals.Instance.onFinishAreaEntered -= OnFinishAreaEntered;
             CoreGameSignals.Instance.onReset -= OnReset;
-        } 
+        }
+
         private void OnDisable()
         {
             UnSubscribeEvents();

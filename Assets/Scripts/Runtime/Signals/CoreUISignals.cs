@@ -1,27 +1,13 @@
 using UnityEngine;
 using Runtime.Enums;
+using Runtime.Extensions;
 using UnityEngine.Events;
 
 namespace Runtime.Signals
 {
-    public class CoreUISignals : MonoBehaviour
+    public class CoreUISignals : MonoSingleton<CoreUISignals>
    {
-       #region Singleton
-
-       public static CoreUISignals Instance;
-
-       private void Awake()
-       {
-           if (Instance != this && Instance != null)
-           {
-               Destroy(gameObject);
-               return;
-           }
-
-           Instance = this;
-       }
-
-       #endregion
+        
 
        public UnityAction<UIPanelTypes, int> onOpenPanel = delegate { };
        public UnityAction<int> onClosePanel = delegate { };
