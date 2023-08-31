@@ -21,8 +21,11 @@ namespace Runtime.Signals
         public UnityAction onReset = delegate { };
         
         public Func<byte> onGetLevelValue = delegate { return 0; };
-        public UnityAction onStageAreaEntered = delegate {  };
-        public UnityAction<byte> onStageAreaSuccesful = delegate {  };
-        public UnityAction onFinishAreaEntered = delegate {  };
+        
+        public UnityAction<byte> onStageAreaSuccessful = delegate { };
+        public UnityAction onStageAreaEntered = delegate { };
+        public UnityAction onFinishAreaEntered = delegate { };
+        public UnityAction onMiniGameAreaEntered = delegate { };
+        public UnityAction onMultiplierAreaEntered = delegate { };
     }
 }
