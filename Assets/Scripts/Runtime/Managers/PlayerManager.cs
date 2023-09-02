@@ -73,7 +73,7 @@ namespace Runtime.Managers
             CoreGameSignals.Instance.onLevelSuccessful += () => movementController.IsReadyToPlay(false);
             CoreGameSignals.Instance.onLevelFailed += () => movementController.IsReadyToPlay(false);
             CoreGameSignals.Instance.onStageAreaEntered += () => movementController.IsReadyToPlay(false);
-          //  CoreGameSignals.Instance.onStageAreaSuccessful += OnStageAreaSuccessful;
+            CoreGameSignals.Instance.onStageAreaSuccessful += OnStageAreaSuccessful;
             CoreGameSignals.Instance.onFinishAreaEntered += OnFinishAreaEntered;
             CoreGameSignals.Instance.onReset += OnReset;
         }
@@ -88,7 +88,8 @@ namespace Runtime.Managers
             StageValue = ++value;
             movementController.IsReadyToPlay(true);
             meshController.ScaleUpPlayer();
-           // meshController.PlayConfetiParticle();
+             
+            meshController.PlayConfetti();
             meshController.ShowUpText();
         }
 
@@ -116,7 +117,7 @@ namespace Runtime.Managers
             CoreGameSignals.Instance.onLevelSuccessful -= () => movementController.IsReadyToPlay(false);
             CoreGameSignals.Instance.onLevelFailed -= () => movementController.IsReadyToPlay(false);
             CoreGameSignals.Instance.onStageAreaEntered -= () => movementController.IsReadyToPlay(false);
-            //CoreGameSignals.Instance.onStageAreaSuccessful -= OnStageAreaSuccessful;
+            CoreGameSignals.Instance.onStageAreaSuccessful -= OnStageAreaSuccessful;
             CoreGameSignals.Instance.onFinishAreaEntered -= OnFinishAreaEntered;
             CoreGameSignals.Instance.onReset -= OnReset;
         }

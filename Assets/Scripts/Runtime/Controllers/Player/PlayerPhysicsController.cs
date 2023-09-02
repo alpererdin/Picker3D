@@ -1,4 +1,3 @@
-using System;
 using DG.Tweening;
 using Runtime.Controllers.Pool;
 using Runtime.Managers;
@@ -26,6 +25,7 @@ namespace Runtime.Controllers.Player
         private readonly string _miniGame = "MiniGameArea";
 
         #endregion
+
         #endregion
 
         private void OnTriggerEnter(Collider other)
@@ -40,48 +40,44 @@ namespace Runtime.Controllers.Player
                 {
                     var result = other.transform.parent.GetComponentInChildren<PoolController>()
                         .TakeResults(manager.StageValue);
+
                     if (result)
                     {
-                        CoreGameSignals.Instance.onStageAreaSuccessful?.Invoke((manager.StageValue));
+                        CoreGameSignals.Instance.onStageAreaSuccessful?.Invoke(manager.StageValue);
                         InputSignals.Instance.onEnableInput?.Invoke();
                     }
                     else
                     {
                         CoreGameSignals.Instance.onLevelFailed?.Invoke();
                     }
-               
                 });
-                
                 return;
-                 
             }
 
             if (other.CompareTag(_finish))
             {
                 CoreGameSignals.Instance.onFinishAreaEntered?.Invoke();
                 InputSignals.Instance.onDisableInput?.Invoke();
-                //CoreGameSignals.Instance.onLevelSuccessful?.Invoke();
                 return;
             }
 
             if (other.CompareTag(_miniGame))
             {
-                //kucuk oyunum
+                //Write the MiniGame Mechanics
             }
         }
 
         private void OnDrawGizmos()
         {
-            Gizmos.color =Color.yellow;
+            Gizmos.color = Color.yellow;
             var transform1 = manager.transform;
             var position1 = transform1.position;
-            
-            Gizmos.DrawSphere(new Vector3(position1.x,position1.y-1f,position1.z+0.9f),1.7f);
+
+            Gizmos.DrawSphere(new Vector3(position1.x, position1.y - 1f, position1.z + .9f), 1.7f);
         }
 
         public void OnReset()
         {
-            
         }
     }
 }

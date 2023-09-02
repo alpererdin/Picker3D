@@ -21,6 +21,7 @@ namespace Runtime.Controllers.Pool
         [SerializeField] private TextMeshPro poolText;
         [SerializeField] private byte stageID;
         [SerializeField] private new Renderer renderer;
+        [SerializeField] private Color poolAfterColor;
 
         #endregion
 
@@ -62,16 +63,20 @@ namespace Runtime.Controllers.Pool
         private void OnActivateTweens(byte stageValue)
         {
             if (stageValue != stageID) return;
-            renderer.material.DOColor(new Color(0.1607842f, 0.6039216f, 0.1766218f), 1).SetEase(Ease.Linear);
+              foreach (var tween in tweens)
+                {
+                    tween.DOPlay();
+                }
+            
         }
         private void OnChangePoolColor(byte stageValue)
         {
             if (stageValue!=stageID)return;
-            
-                foreach (var tween in tweens)
+            renderer.material.DOColor(poolAfterColor, .5f).SetEase(Ease.Flash).SetRelative(false);
+              /*  foreach (var tween in tweens)
                 {
                     tween.DOPlay(); 
-                }
+                }*/
             
         }
 

@@ -17,7 +17,7 @@ namespace Runtime.Managers
             CoreGameSignals.Instance.onLevelSuccessful += OnLevelSuccessful;
             CoreGameSignals.Instance.onLevelFailed += OnLevelFailed;
             CoreGameSignals.Instance.onReset += OnReset;
-            //CoreGameSignals.Instance.onStageAreaSuccessful += OnStageAreaSuccessful;
+            CoreGameSignals.Instance.onStageAreaSuccessful += OnStageAreaSuccessful;
         }
 
         private void UnSubscribeEvents()
@@ -26,7 +26,7 @@ namespace Runtime.Managers
             CoreGameSignals.Instance.onLevelSuccessful -= OnLevelSuccessful;
             CoreGameSignals.Instance.onLevelFailed -= OnLevelFailed;
             CoreGameSignals.Instance.onReset -= OnReset;
-            //CoreGameSignals.Instance.onStageAreaSuccessful -= OnStageAreaSuccessful;
+            CoreGameSignals.Instance.onStageAreaSuccessful -= OnStageAreaSuccessful;
         }
 
         private void OnDisable()
