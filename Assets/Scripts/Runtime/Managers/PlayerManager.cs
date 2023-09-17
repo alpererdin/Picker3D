@@ -88,8 +88,7 @@ namespace Runtime.Managers
             StageValue = ++value;
             movementController.IsReadyToPlay(true);
             meshController.ScaleUpPlayer();
-             
-            meshController.PlayConfetti();
+            meshController.PlayConfetiParticle();
             meshController.ShowUpText();
         }
 

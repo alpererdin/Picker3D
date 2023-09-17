@@ -9,7 +9,6 @@ namespace Runtime.Data.ValueObjects
         public PlayerMovementData MovementData;
         public PlayerMeshData MeshData;
         public PlayerForceData ForceData;
-        
     }
 
     [Serializable]

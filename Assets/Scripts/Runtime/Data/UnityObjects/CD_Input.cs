@@ -1,4 +1,4 @@
-using Runtime.Data.ValueObjects;
+﻿using Runtime.Data.ValueObjects;
 using UnityEngine;
 
 namespace Runtime.Data.UnityObjects
@@ -7,6 +7,5 @@ namespace Runtime.Data.UnityObjects
     public class CD_Input : ScriptableObject
     {
         public InputData Data;
-
     }
 }

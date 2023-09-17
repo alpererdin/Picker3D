@@ -1,17 +1,17 @@
- 
-using System.Linq;
+﻿using System.Linq;
 using Runtime.Data.ValueObjects;
 using Runtime.Managers;
 using UnityEngine;
- 
+
 namespace Runtime.Commands.Player
 {
     public class ForceBallsToPoolCommand
     {
-
         private PlayerManager _manager;
         private PlayerForceData _forceData;
+
         private readonly string _collectable = "Collectable";
+
         public ForceBallsToPoolCommand(PlayerManager manager, PlayerForceData forceData)
         {
             _manager = manager;
@@ -35,8 +35,8 @@ namespace Runtime.Commands.Player
                 rb.AddForce(new Vector3(0, _forceData.ForceParameters.y, _forceData.ForceParameters.z),
                     ForceMode.Impulse);
             }
-            //ondraw ekle
 
+            collectableColliderList.Clear();
         }
     }
 }

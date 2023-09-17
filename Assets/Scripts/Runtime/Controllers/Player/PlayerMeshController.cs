@@ -1,5 +1,6 @@
-using DG.Tweening;
+﻿using DG.Tweening;
 using Runtime.Data.ValueObjects;
+using Runtime.Managers;
 using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
@@ -12,16 +13,17 @@ namespace Runtime.Controllers.Player
 
         #region Serialized Variables
 
+        [SerializeField] private PlayerManager manager;
         [SerializeField] private new Renderer renderer;
         [SerializeField] private TextMeshPro scaleText;
-        [SerializeField] private ParticleSystem confetti;
-        
+        [SerializeField] private ParticleSystem confettiParticle;
 
         #endregion
 
         #region Private Variables
 
         [ShowInInspector] private PlayerMeshData _data;
+        [ShowInInspector] private PoolData _poolData;
 
         #endregion
 
@@ -32,17 +34,14 @@ namespace Runtime.Controllers.Player
             scaleText.gameObject.SetActive(false);
         }
 
-        internal void SetData(PlayerMeshData data)
+        internal void SetData(PlayerMeshData scaleData)
         {
-            _data = data;
+            _data = scaleData;
         }
 
-        
-        
         internal void ScaleUpPlayer()
         {
-            renderer.gameObject.transform.DOScaleX(_data.ScaleCounter, 1f).SetEase(Ease.Flash);
-            
+            renderer.gameObject.transform.DOScaleX(_data.ScaleCounter, 1).SetEase(Ease.Flash);
         }
 
         internal void ShowUpText()
@@ -53,10 +52,9 @@ namespace Runtime.Controllers.Player
                 scaleText.rectTransform.DOAnchorPosY(-.85f, .65f).SetRelative(true));
         }
 
-        internal void PlayConfetti()
+        internal void PlayConfetiParticle()
         {
-            confetti.Play();
-            
+            confettiParticle.Play();
         }
 
         internal void OnReset()
@@ -64,12 +62,4 @@ namespace Runtime.Controllers.Player
             renderer.gameObject.transform.DOScaleX(1, 1).SetEase(Ease.Linear);
         }
     }
-    /*var transform1 = transform;
-    confetti.Emit(new ParticleSystem.Particle()
-    {
-        position = transform.position,
-        rotation = transform.rotation,
-        velocity = Vector3.zero
-                
-    });*/
 }

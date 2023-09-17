@@ -110,7 +110,5 @@ namespace Runtime.Managers
             CoreGameSignals.Instance.onLevelInitialize?.Invoke((byte)(_currentLevel % totalLevelCount));
             CoreUISignals.Instance.onOpenPanel?.Invoke(UIPanelTypes.Start, 1);
         }
-
-         
     }
 }
