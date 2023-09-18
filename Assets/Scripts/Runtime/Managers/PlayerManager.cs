@@ -75,10 +75,17 @@ namespace Runtime.Managers
             CoreGameSignals.Instance.onLevelSuccessful += () => movementController.IsReadyToPlay(false);
             CoreGameSignals.Instance.onLevelFailed += () => movementController.IsReadyToPlay(false);
             CoreGameSignals.Instance.onStageAreaEntered += () => movementController.IsReadyToPlay(false);
+            CoreGameSignals.Instance.onMiniGameStageAreaEntered += () => movementController.IsReadyToPlay(false);
             CoreGameSignals.Instance.onStageAreaSuccessful += OnStageAreaSuccessful;
+            CoreGameSignals.Instance.onMiniGameAreaEntered += OnMiniGameAreaEntered;
             CoreGameSignals.Instance.onFinishAreaEntered += OnFinishAreaEntered;
+            CoreGameSignals.Instance.onMiniGameStageAreaExit += OnMiniGameStageAreaExit;
+            
+            
             CoreGameSignals.Instance.onReset += OnReset;
         }
+
+        
 
         private void OnInputDragged(HorizontalInputParams inputParams)
         {
@@ -93,11 +100,23 @@ namespace Runtime.Managers
             meshController.PlayConfetiParticle();
             meshController.ShowUpText();
         }
+        private void OnMiniGameStageAreaExit()
+        {
+            
+            movementController.IsReadyToPlay(true);
+            meshController.PlayConfetiParticle();
+            meshController.ShowUpText();
+        }
+        private void OnMiniGameAreaEntered()
+        {
+            meshController.MiniGameScaleUpPlayer();
+            meshController.PlayConfetiParticle();
+        }
 
         private void OnFinishAreaEntered()
         {
             CoreGameSignals.Instance.onLevelSuccessful?.Invoke();
-            //Mini Game Yazılmalı
+           
         }
 
 
@@ -119,7 +138,10 @@ namespace Runtime.Managers
             CoreGameSignals.Instance.onLevelFailed -= () => movementController.IsReadyToPlay(false);
             CoreGameSignals.Instance.onStageAreaEntered -= () => movementController.IsReadyToPlay(false);
             CoreGameSignals.Instance.onStageAreaSuccessful -= OnStageAreaSuccessful;
+            CoreGameSignals.Instance.onMiniGameAreaEntered -= OnMiniGameAreaEntered;
+            CoreGameSignals.Instance.onMiniGameStageAreaEntered -= () => movementController.IsReadyToPlay(false);
             CoreGameSignals.Instance.onFinishAreaEntered -= OnFinishAreaEntered;
+            CoreGameSignals.Instance.onMiniGameStageAreaExit -= OnMiniGameStageAreaExit;
             CoreGameSignals.Instance.onReset -= OnReset;
         }
 

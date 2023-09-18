@@ -19,9 +19,14 @@ namespace Runtime.Signals
         public Func<byte> onGetLevelValue = delegate { return 0; };
 
         public UnityAction<byte> onStageAreaSuccessful = delegate { };
+        
         public UnityAction onStageAreaEntered = delegate { };
         public UnityAction onFinishAreaEntered = delegate { };
         public UnityAction onMiniGameAreaEntered = delegate { };
+        
+        public UnityAction onMiniGameStageAreaEntered = delegate { };
+        public UnityAction onMiniGameStageAreaExit = delegate { };
+        
         public UnityAction onMultiplierAreaEntered = delegate { };
     }
 }

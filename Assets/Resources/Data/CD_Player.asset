@@ -18,6 +18,7 @@ MonoBehaviour:
       SidewaySpeed: 2
     MeshData:
       ScaleCounter: 1.2
+      MiniGameScaleCounter: 2
     ForceData:
       ForceParameters:
         x: 0

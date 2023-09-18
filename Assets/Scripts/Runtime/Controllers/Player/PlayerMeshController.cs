@@ -43,6 +43,10 @@ namespace Runtime.Controllers.Player
         {
             renderer.gameObject.transform.DOScaleX(_data.ScaleCounter, 1).SetEase(Ease.Flash);
         }
+        internal void MiniGameScaleUpPlayer()
+        {
+            renderer.gameObject.transform.DOScaleX(_data.MiniGameScaleCounter, 1).SetEase(Ease.Flash);
+        }
 
         internal void ShowUpText()
         {

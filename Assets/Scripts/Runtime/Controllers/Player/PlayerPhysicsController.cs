@@ -2,6 +2,7 @@
 using Runtime.Controllers.Pool;
 using Runtime.Managers;
 using Runtime.Signals;
+using Runtime.Enums;
 using UnityEngine;
 
 namespace Runtime.Controllers.Player
@@ -23,6 +24,7 @@ namespace Runtime.Controllers.Player
         private readonly string _stageArea = "StageArea";
         private readonly string _finish = "FinishArea";
         private readonly string _miniGame = "MiniGameArea";
+        private readonly string _miniGameStageArea = "MiniGameStage";
 
         #endregion
 
@@ -65,7 +67,27 @@ namespace Runtime.Controllers.Player
 
             if (other.CompareTag(_miniGame))
             {
-                //Write the MiniGame Mechanics
+                CoreGameSignals.Instance.onMiniGameAreaEntered?.Invoke();
+                //+
+                DOVirtual.DelayedCall(.5f,
+                    () => CameraSignals.Instance.onChangeCameraState?.Invoke(CameraState.MiniGame));
+                DOVirtual.DelayedCall(3f,
+                    () => CameraSignals.Instance.onChangeCameraState?.Invoke(CameraState.Follow));
+                return;
+            }
+
+            if (other.CompareTag(_miniGameStageArea))
+            {
+                manager.ForceCommand.Execute();
+                CoreGameSignals.Instance.onMiniGameStageAreaEntered?.Invoke();
+               // InputSignals.Instance.onDisableInput?.Invoke();
+               DOVirtual.DelayedCall(3, () =>
+               {
+                       CoreGameSignals.Instance.onMiniGameStageAreaExit?.Invoke();
+                       InputSignals.Instance.onEnableInput?.Invoke();
+                   
+               });
+               return;
             }
         }
 

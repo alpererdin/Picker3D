@@ -22,6 +22,7 @@ namespace Runtime.Data.ValueObjects
     public struct PlayerMeshData
     {
         public float ScaleCounter;
+        public float MiniGameScaleCounter;
     }
 
     [Serializable]
