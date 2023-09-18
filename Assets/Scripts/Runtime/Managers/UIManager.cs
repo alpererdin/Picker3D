@@ -1,3 +1,4 @@
+using Runtime.Controllers.UI;
 using Runtime.Enums;
 using Runtime.Signals;
 using UnityEngine;
@@ -52,20 +53,24 @@ namespace Runtime.Managers
 
         public void NextLevel()
         {
+            CoreUISignals.Instance.onClosePanel?.Invoke(2);
             CoreGameSignals.Instance.onNextLevel?.Invoke();
-            CoreGameSignals.Instance.onReset?.Invoke();
+   
         }
 
         public void RestartLevel()
         {
             CoreGameSignals.Instance.onRestartLevel?.Invoke();
             CoreGameSignals.Instance.onReset?.Invoke();
+           
+            
         }
 
         public void Play()
         {
             UISignals.Instance.onPlay?.Invoke();
             CoreUISignals.Instance.onClosePanel?.Invoke(1);
+           
             InputSignals.Instance.onEnableInput?.Invoke();
             CameraSignals.Instance.onSetCameraTarget?.Invoke();
         }
@@ -77,7 +82,7 @@ namespace Runtime.Managers
 
         private void OnReset()
         {
-            CoreUISignals.Instance.onCloseAllPanels?.Invoke();
+            CoreUISignals.Instance.onClosePanel?.Invoke(2);
             CoreUISignals.Instance.onOpenPanel?.Invoke(UIPanelTypes.Start, 1);
         }
     }

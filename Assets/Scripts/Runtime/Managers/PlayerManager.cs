@@ -17,6 +17,7 @@ namespace Runtime.Managers
         public byte StageValue;
 
         internal ForceBallsToPoolCommand ForceCommand;
+       
 
         #endregion
 
@@ -57,6 +58,7 @@ namespace Runtime.Managers
         private void Init()
         {
             ForceCommand = new ForceBallsToPoolCommand(this, _data.ForceData);
+        
         }
 
         private void OnEnable()

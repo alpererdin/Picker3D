@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: CD_Input
   m_EditorClassIdentifier: 
   Data:
-    HorizontalInputSpeed: 3
+    HorizontalInputSpeed: 2
     ClampValues:
       x: -5.75
       y: 5.75

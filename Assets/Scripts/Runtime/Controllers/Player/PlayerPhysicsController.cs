@@ -30,8 +30,10 @@ namespace Runtime.Controllers.Player
 
         private void OnTriggerEnter(Collider other)
         {
+         
             if (other.CompareTag(_stageArea))
             {
+             
                 manager.ForceCommand.Execute();
                 CoreGameSignals.Instance.onStageAreaEntered?.Invoke();
                 InputSignals.Instance.onDisableInput?.Invoke();

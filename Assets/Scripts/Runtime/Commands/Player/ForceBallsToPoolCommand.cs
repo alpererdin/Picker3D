@@ -38,5 +38,6 @@ namespace Runtime.Commands.Player
 
             collectableColliderList.Clear();
         }
+        
     }
 }

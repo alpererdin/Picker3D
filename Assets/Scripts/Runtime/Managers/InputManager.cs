@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Interfaces;
+using Runtime.Commands.Input;
 using Runtime.Data.UnityObjects;
 using Runtime.Data.ValueObjects;
 using Runtime.Keys;
@@ -15,6 +18,10 @@ namespace Runtime.Managers
         #region Self Variables
 
         #region Private Variables
+        
+        private ICommand _onInputTakenCommand;
+        private ICommand _onInputReleasedCommand;
+        private ICommand _onInputDraggedCommand;
 
         [ShowInInspector] private InputData _data;
         [ShowInInspector] private bool _isAvailableForTouch, _isFirstTimeTouchTaken, _isTouching;
@@ -26,6 +33,13 @@ namespace Runtime.Managers
         #endregion
 
         #endregion
+
+        private void Start()
+        {
+            _onInputTakenCommand = new OnInputTakenCommand();
+            _onInputReleasedCommand = new OnInputReleasedCommand();
+            _onInputDraggedCommand = new OnInputDraggedCommand(_data);  
+        }
 
         private void Awake()
         {
@@ -79,54 +93,18 @@ namespace Runtime.Managers
         }
 
         private void Update()
-        {
-            if (!_isAvailableForTouch) return;
-
-            if (Input.GetMouseButtonUp(0) && !IsPointerOverUIElement())
-            {
-                _isTouching = false;
-                InputSignals.Instance.onInputReleased?.Invoke();
-            }
-
+        { 
             if (Input.GetMouseButtonDown(0) && !IsPointerOverUIElement())
             {
-                _isTouching = true;
-                InputSignals.Instance.onInputTaken?.Invoke();
-                if (!_isFirstTimeTouchTaken)
-                {
-                    _isFirstTimeTouchTaken = true;
-                    InputSignals.Instance.onFirstTimeTouchTaken?.Invoke();
-                }
-
-                _mousePosition = Input.mousePosition;
+                _onInputTakenCommand.Execute();
             }
-
-            if (Input.GetMouseButton(0) && !IsPointerOverUIElement())
+            else if (Input.GetMouseButtonUp(0) && !IsPointerOverUIElement())
             {
-                if (_isTouching)
-                {
-                    if (_mousePosition != null)
-                    {
-                        Vector2 mouseDeltaPos = (Vector2)Input.mousePosition - _mousePosition.Value;
-                        if (mouseDeltaPos.x > _data.HorizontalInputSpeed)
-                            _moveVector.x = _data.HorizontalInputSpeed / 10f * mouseDeltaPos.x;
-                        else if (mouseDeltaPos.x < -_data.HorizontalInputSpeed)
-                            _moveVector.x = -_data.HorizontalInputSpeed / 10f * -mouseDeltaPos.x;
-                        else
-                            _moveVector.x = Mathf.SmoothDamp(_moveVector.x, 0f, ref _currentVelocity,
-                                _data.ClampSpeed);
-
-                        _moveVector.x = mouseDeltaPos.x;
-
-                        _mousePosition = Input.mousePosition;
-
-                        InputSignals.Instance.onInputDragged?.Invoke(new HorizontalInputParams()
-                        {
-                            HorizontalValue = _moveVector.x,
-                            ClampValues = _data.ClampValues
-                        });
-                    }
-                }
+                _onInputReleasedCommand.Execute();
+            }
+            else if (Input.GetMouseButton(0) && !IsPointerOverUIElement())
+            {
+                _onInputDraggedCommand.Execute();
             }
         }
 
@@ -141,4 +119,5 @@ namespace Runtime.Managers
             return results.Count > 0;
         }
     }
+    
 }
